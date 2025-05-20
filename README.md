@@ -52,7 +52,7 @@ Dưới đây là danh sách các linh kiện cần thiết để xây dựng h�
 
 ---
 
-> Tổng cộng chi phí phần cứng khá thấp, phù hợp cho các dự án DIY (tự làm) hoặc thử nghiệm hệ thống an ninh thông minh.
+> Tổng cộng chi phí phần cứng khá thấp, link kiện dễ tìm kiếm( shopee, tiktokshop, ..) , phù hợp cho các dự án DIY (tự làm) hoặc thử nghiệm hệ thống an ninh thông minh.
 ## Sơ đồ nối dây
 
 Dưới đây là bảng kết nối các linh kiện chính của hệ thống AuraAlert ESP32:
@@ -62,7 +62,7 @@ Dưới đây là bảng kết nối các linh kiện chính của hệ thống 
 | **Cảm biến PIR**  | VCC               | 3.3V hoặc 5V     | Tùy loại PIR, hầu hết hoạt động ở 3.3V       |
 |                   | GND               | GND              | Phải nối chung GND với ESP32                 |
 |                   | OUT               | GPIO19 (D19)     | Tín hiệu kích hoạt khi phát hiện chuyển động |
-| **ISD1820**       | VCC               | 5V               | Giúp module phát âm thanh to và rõ           |
+| **ISD1820**       | VCC               | 3.3V               | Giúp module phát âm thanh           |
 |                   | GND               | GND              | Chung GND với ESP32                          |
 |                   | P-E               | GPIO18 (D18)     | Điều khiển phát âm khi có chuyển động        |
 
@@ -190,6 +190,7 @@ const int mqtt_port = 8883; // sử dụng kết nối TLS
 const char* mqtt_user = "esp32_user";
 const char* mqtt_password = "your_secure_password";
 ```
+### Lưu ý : Bạn cần thay thế thông tin về server của code trên bằng thông tin server bạn đã đăng ký 
 ### 🛡️ Công dụng của chứng chỉ CA trong kết nối MQTT bảo mật
 
 Khi ESP32 kết nối tới HiveMQ Cloud qua cổng **8883 (TLS/SSL)**, máy chủ sẽ gửi về một **chứng chỉ số** để xác minh danh tính. Để ESP32 có thể **tin tưởng** máy chủ HiveMQ Cloud là hợp lệ và an toàn, ta cần cung cấp cho ESP32 **chứng chỉ CA** tương ứng.
@@ -202,14 +203,14 @@ Khi ESP32 kết nối tới HiveMQ Cloud qua cổng **8883 (TLS/SSL)**, máy ch�
 #### 📌 Cách dùng
 - Chèn nội dung chứng chỉ CA vào trong mã ESP32 dưới dạng chuỗi `const char*`
 - Cấu hình `WiFiClientSecure` sử dụng CA như sau:
-####Bạn có thể tải chứng chỉ CA (dạng PEM) từ liên kết chính thức dưới đây:
+#### Bạn có thể tải chứng chỉ CA (dạng PEM) từ liên kết chính thức dưới đây:
 
 [Tải certificate.pem tại đây](https://www.hivemq.com/docs/hivemq-cloud/certificate.pem)
 
-##App nhận cảnh báo 
+## App nhận cảnh báo 
 - Sử dụng công cụ Android Studio với ngôn ngữ sử dụng là kotlin
 - Link code app: https://github.com/duongdangduy95/AuraAlert_app.git 
-##Cách sử dụng hệ thống 
+## Cách sử dụng hệ thống 
 - Kết nối các thiết bị theo mạch như trên
 - Vào ArduinoIDE chọn board ESP32 Dev Module và cổng COM tương ứng
 - Nạp code vào ESP32
@@ -222,11 +223,11 @@ Khi ESP32 kết nối tới HiveMQ Cloud qua cổng **8883 (TLS/SSL)**, máy ch�
 - Bạn có thể thử nghiệm bằng cách mở Serial Monitor trên esp32 để kiểm tra thường sau khi kết nối wifi sẽ kết nối ngay được với MQTT và sẽ hiện thông báo gửi lên MQTT
 ## Cách hệ thống hoạt động
 - Khi phát hiện có xâm nhập hệ thống sẽ phát còi cảnh báo ra bên ngoài và gửi tin dạng: *Gửi MQTT đến /alert/motion với nội dung: {"event":"motion_detected","mac":"00:00:00:00:00:00","message":"Phát hiện xâm nhập!"}* lên server MQTT đã đăng ký trên web HiveMQ
-- Server MQTT sau khi nhận gói tin sẽ gửi về app Android thông báo và hiện thông báo lên điện thoại và lưu thông báo lấy thời gian phát thông bào cứ 5 giây 1 lần
+- Server MQTT sau khi nhận gói tin sẽ gửi về app Android thông báo và hiện thông báo lên điện thoại và lưu thông báo lấy thời gian phát thông báo cứ 5 giây 1 lần
   ### Nếu không có kết nối MQTT thì bạn cần thử các trường hợp sau :
   - Dùng Serial Monitor trong ArduinoIDE kiểm tra esp32 kết nối được MQTT không
   - Dùng logcat trong Android Studio để  kiểm tra app nhận được gói tin MQTT không
-  - Hoặc bạn có thể kiểm tra server bằng cách tạo 1 client trên hiveMQ để coi có bắt gói tin gửi từ ESP32 lên không
+  - Hoặc bạn có thể kiểm tra server bằng cách tạo 1 client trên hiveMQ kết nối với server đã tạo để coi có nhận được gói tin gửi từ ESP32 lên không
 
 ## 🙏 Lời cảm ơn
 
