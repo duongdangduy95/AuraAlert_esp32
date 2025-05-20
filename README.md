@@ -135,7 +135,7 @@ Dưới đây là bảng kết nối các linh kiện chính của hệ thống 
 
 ## ☁️ Hướng dẫn đăng ký và cấu hình máy chủ MQTT trên HiveMQ Cloud
 
-Để sử dụng giao tiếp MQTT giữa **ESP32** và ứng dụng, bạn cần có một máy chủ MQTT. HiveMQ Cloud là một lựa chọn miễn phí, dễ sử dụng và hỗ trợ giao thức bảo mật (TLS/SSL).
+Để sử dụng giao tiếp MQTT giữa **ESP32** và ứng dụng, bạn cần có một máy chủ MQTT. HiveMQ Cloud là một lựa chọn miễn phí( có giới hạn), dễ sử dụng và hỗ trợ giao thức bảo mật (TLS/SSL).
 
 ### 🔐 Bước 1: Đăng ký tài khoản HiveMQ Cloud
 
@@ -206,7 +206,45 @@ Khi ESP32 kết nối tới HiveMQ Cloud qua cổng **8883 (TLS/SSL)**, máy ch�
 
 [Tải certificate.pem tại đây](https://www.hivemq.com/docs/hivemq-cloud/certificate.pem)
 
-### 
+##App nhận cảnh báo 
+- Sử dụng công cụ Android Studio với ngôn ngữ sử dụng là kotlin
+- Link code app: https://github.com/duongdangduy95/AuraAlert_app.git 
+##Cách sử dụng hệ thống 
+- Kết nối các thiết bị theo mạch như trên
+- Vào ArduinoIDE chọn board ESP32 Dev Module và cổng COM tương ứng
+- Nạp code vào ESP32
+- Kết nối Wifi cho esp32
+### Cách kết nối wifi cho esp32
+- Trong trường hợp không có wifi đã lưu ESP32 sẽ phát một wifi ESP32-Config và bạn đăng nhập nó với mật khẩu 12345678
+- Truy cập http://192.168.4.1 và đăng nhập với username là admin và password là 1234
+- Nhập tên wifi và mật khẩu wifi nơi hiện tại (chức năng này có lẽ hơi lỏ nếu khu vực có wifi kém)
+- Trong trường hợp đã có mật khẩu wifi mà chờ 1 thời gian không có kết nối wifi thì bạn chịu khó nhấn nút reset trên esp32 và chờ nó kết nối lại ( lưu ý kiểm tra wifi trước khi kiểm tra kết nối board)
+- Bạn có thể thử nghiệm bằng cách mở Serial Monitor trên esp32 để kiểm tra thường sau khi kết nối wifi sẽ kết nối ngay được với MQTT và sẽ hiện thông báo gửi lên MQTT
+## Cách hệ thống hoạt động
+- Khi phát hiện có xâm nhập hệ thống sẽ phát còi cảnh báo ra bên ngoài và gửi tin dạng: *Gửi MQTT đến /alert/motion với nội dung: {"event":"motion_detected","mac":"00:00:00:00:00:00","message":"Phát hiện xâm nhập!"}* lên server MQTT đã đăng ký trên web HiveMQ
+- Server MQTT sau khi nhận gói tin sẽ gửi về app Android thông báo và hiện thông báo lên điện thoại và lưu thông báo lấy thời gian phát thông bào cứ 5 giây 1 lần
+  ### Nếu không có kết nối MQTT thì bạn cần thử các trường hợp sau :
+  - Dùng Serial Monitor trong ArduinoIDE kiểm tra esp32 kết nối được MQTT không
+  - Dùng logcat trong Android Studio để  kiểm tra app nhận được gói tin MQTT không
+  - Hoặc bạn có thể kiểm tra server bằng cách tạo 1 client trên hiveMQ để coi có bắt gói tin gửi từ ESP32 lên không
+
+## 🙏 Lời cảm ơn
+
+Cảm ơn các bạn đã dành thời gian xem và sử dụng dự án **AuraAlert**. Dự án này vẫn đang trong quá trình hoàn thiện, nên mọi ý kiến đóng góp của các bạn sẽ là nguồn động lực rất lớn giúp mình cải thiện sản phẩm tốt hơn.
+
+## 💬 Góp ý & phản hồi
+
+Mình rất mong nhận được góp ý, nhận xét hoặc bất kỳ đề xuất nào từ các bạn.  
+Nếu có thời gian, bạn có thể:
+
+- Tạo một [issue](https://github.com/duongdangduy95/AuraAlert_app/issues) mới
+- Gửi pull request
+- Hoặc đơn giản là để lại một comment chia sẻ cảm nhận 😄
+
+> ⚠️ **Lưu ý nhẹ nhàng**: Mong nhận được những góp ý **văn minh, tích cực** — xin tránh "gạch đá" dưới mọi hình thức nhé 😅
+
+Cảm ơn các bạn rất nhiều! ❤️
+
 
 
 
