@@ -31,18 +31,32 @@ Dưới đây là danh sách các linh kiện cần thiết để xây dựng h�
 - **Mô tả**: ESP32 là vi điều khiển mạnh mẽ có tích hợp Wi-Fi và Bluetooth, rất phù hợp cho các ứng dụng IoT.
 - **Vai trò**: Là bộ não chính điều khiển hệ thống, xử lý dữ liệu từ cảm biến và gửi cảnh báo qua MQTT.
 
-### 2. Cảm biến chuyển động PIR (Passive Infrared)
+     ![ESP32 Dev Module](https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-20%20212021.png)
 
-- **Mô tả**: Cảm biến PIR phát hiện chuyển động của người hoặc vật thể thông qua sự thay đổi bức xạ hồng ngoại.
-- **Đặc điểm**: điện áp hoạt động DC 3.8V – 5V, Phạm vi phát hiện: góc 360 độ hình nón, độ xa tối đa 6m.
-- **Vai trò**: Dùng để phát hiện khi có người lại gần khu vực giám sát.
-- **Lưu ý**: Nên điều chỉnh độ nhạy và thời gian giữ tín hiệu sao cho phù hợp với môi trường sử dụng.
 
+<h3>2. Cảm biến chuyển động PIR (Passive Infrared)</h3>
+
+<ul>
+  <li><strong>Mô tả</strong>: Cảm biến PIR phát hiện chuyển động của người hoặc vật thể thông qua sự thay đổi bức xạ hồng ngoại.</li>
+  <li><strong>Đặc điểm</strong>: điện áp hoạt động DC 3.8V – 5V, Phạm vi phát hiện: góc 360 độ hình nón, độ xa tối đa 6m.</li>
+  <li><strong>Vai trò</strong>: Dùng để phát hiện khi có người lại gần khu vực giám sát.</li>
+  <li><strong>Lưu ý</strong>: Nên điều chỉnh độ nhạy và thời gian giữ tín hiệu sao cho phù hợp với môi trường sử dụng.</li>
+</ul>
+
+<p float="left">
+  <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-21%20205425.png" width="300"/>
+  <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-21%20205419.png" width="300"/>
+</p>
+
+     
 ### 3. Module phát âm thanh ISD1820
 
 - **Mô tả**: ISD1820 là module ghi và phát lại âm thanh ngắn (3-5 giây), dễ sử dụng với micro tích hợp và loa nhỏ.
 - **Vai trò**: Phát lời cảnh báo (ví dụ: “Vui lòng không tiến lại gần!”) khi có người bị phát hiện.
 - **Lưu ý**: Có thể ghi âm trực tiếp bằng micro trên module hoặc sử dụng chân điều khiển để phát từ vi điều khiển.
+
+  <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-21%20205613.png" width="350"/>
+
 
 ### 4. Dây nối (jumper wires)
 
@@ -75,7 +89,10 @@ Dưới đây là bảng kết nối các linh kiện chính của hệ thống 
 
 ---
 
-### 🖼️ Hình minh họa (nếu có):
+### 🖼️ Hình ảnh hệ thống sau khi lắp các linh kiện:
+
+<img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/%E1%BA%A3nh%20h%E1%BB%87%20th%E1%BB%91ng.jpg" width="500"/>
+
 
 
 ## Arduino IDE là gì?
@@ -217,17 +234,23 @@ Khi ESP32 kết nối tới HiveMQ Cloud qua cổng **8883 (TLS/SSL)**, máy ch�
 - Kết nối Wifi cho esp32
 ### Cách kết nối wifi cho esp32
 - Trong trường hợp không có wifi đã lưu ESP32 sẽ phát một wifi ESP32-Config và bạn đăng nhập nó với mật khẩu 12345678
-- Truy cập http://192.168.4.1 và đăng nhập với username là admin và password là 1234
+- Truy cập http://192.168.4.1 và đăng nhập với username là `admin` và password là `1234`
+
+  <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-20%20074704.png" width="500"/>
+
 - Nhập tên wifi và mật khẩu wifi nơi hiện tại (chức năng này có lẽ hơi lỏ nếu khu vực có wifi kém)
 - Trong trường hợp đã có mật khẩu wifi mà chờ 1 thời gian không có kết nối wifi thì bạn chịu khó nhấn nút reset trên esp32 và chờ nó kết nối lại ( lưu ý kiểm tra wifi trước khi kiểm tra kết nối board)
 - Bạn có thể thử nghiệm bằng cách mở Serial Monitor trên esp32 để kiểm tra thường sau khi kết nối wifi sẽ kết nối ngay được với MQTT và sẽ hiện thông báo gửi lên MQTT
+
+   <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-20%20224032.png" width="500"/>
 ## Cách hệ thống hoạt động
 - Khi phát hiện có xâm nhập hệ thống sẽ phát còi cảnh báo ra bên ngoài và gửi tin dạng: *Gửi MQTT đến /alert/motion với nội dung: {"event":"motion_detected","mac":"00:00:00:00:00:00","message":"Phát hiện xâm nhập!"}* lên server MQTT đã đăng ký trên web HiveMQ
 - Server MQTT sau khi nhận gói tin sẽ gửi về app Android thông báo và hiện thông báo lên điện thoại và lưu thông báo lấy thời gian phát thông báo cứ 5 giây 1 lần
   ### Nếu không có kết nối MQTT thì bạn cần thử các trường hợp sau :
   - Dùng Serial Monitor trong ArduinoIDE kiểm tra esp32 kết nối được MQTT không
   - Dùng logcat trong Android Studio để  kiểm tra app nhận được gói tin MQTT không
-  - Hoặc bạn có thể kiểm tra server bằng cách tạo 1 client trên hiveMQ kết nối với server đã tạo để coi có nhận được gói tin gửi từ ESP32 lên không
+    <img src="https://github.com/duongdangduy95/AuraAlert_esp32/raw/main/images/Screenshot%202025-05-20%20224316.png" width="500"/>
+  - Hoặc bạn có thể kiểm tra server bằng cách tạo 1 client trên hiveMQ kết nối với server đã tạo để coi có nhận được gói tin gửi từ ESP32 lên không (link trang web:https://www.hivemq.com/demos/websocket-client/)
 
 ## 🙏 Lời cảm ơn
 
